@@ -3,7 +3,7 @@ from pkg.plugin.host import EventContext, PluginHost
 
 import os
 import psutil
-
+import re
 
 # 注册插件
 @register(name="termux", description="执行终端指令", version="0.2", author="xuebaiyo")
@@ -15,7 +15,7 @@ class SysStatPlugin(Plugin):
         pass
 
     @on(GroupCommandSent)
-    @on(PersonCommandSent)
+    
     def command_send(self, host: PluginHost, event: EventContext, command: str, **kwargs):
         if command == "t" or command == "termux":
             event.prevent_default()
@@ -42,6 +42,18 @@ CPU使用率: {psutil.cpu_percent(interval=1):.2f}%
                 "reply",
                 [res.strip()]
             )
+            
+    @on(PersonCommandSent)
+  def person_normal_message_received(self, event: EventContext, **kwargs):
+        msg = kwargs['text_message']
+        ossh = re.search(r"!(.*)", string)  #截取!号后所有字符
+            # 输出测试结果
+            ossh = os.popen('ping 192.168.191.2').readlines()
+            # 回复消息 "hello, <发送者id>!"
+            event.add_return("reply", ["命令执行结束!,直接结果为: {ossh}{}!".format(kwargs['sender_id'])])
+
+            # 阻止该事件默认行为（向接口获取回复）
+            event.prevent_default()
 
     # 插件卸载时触发
     def __del__(self):
