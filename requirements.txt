@@ -1,3 +1,2 @@
 psutil
-re
 subprocess
