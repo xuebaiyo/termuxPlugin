@@ -6,7 +6,7 @@ import psutil
 
 
 # 注册插件
-@register(name="termux", description="执行终端指令", version="0.1", author="xuebaiyo")
+@register(name="termux", description="执行终端指令", version="0.2", author="xuebaiyo")
 class SysStatPlugin(Plugin):
 
     # 插件加载时触发
