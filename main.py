@@ -30,7 +30,7 @@ class SysStatPlugin(Plugin):
 else:
    # print("未找到匹配的内容")
             # 回复消息 "hello, <发送者id>!"
-            event.add_return("reply", ["请在!t 后面输入指令!,{}!".format(kwargs['sender_id'])])
+            event.add_return("reply", ["请在!ossh 后面输入指令!,{}!".format(kwargs['sender_id'])])
 
             # 阻止该事件默认行为（向接口获取回复）
             event.prevent_default()
