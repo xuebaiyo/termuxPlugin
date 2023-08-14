@@ -35,7 +35,7 @@ class SysStatPlugin(Plugin):
             res = f"""====执行结果====
 CPU使用率: {psutil.cpu_percent(interval=1):.2f}%
 执行结果: 
-ossh
+{ossh}
 ============"""
 
             event.add_return(
