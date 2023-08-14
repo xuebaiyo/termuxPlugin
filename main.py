@@ -22,7 +22,7 @@ class Sysossh(Plugin):
                 res = result.decode("utf-8")
             except subprocess.CalledProcessError as e:
                 res = f"命令执行出错：{e.output.decode('utf-8')}"
-
+            time.sleep(5)  # 延时 5 秒
             event.add_return(
                 "reply",
                 [res.strip()]
