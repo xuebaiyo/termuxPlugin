@@ -1,4 +1,4 @@
-import re
+import logging
 import subprocess
 from pkg.plugin.models import *
 from pkg.plugin.host import EventContext, PluginHost
@@ -11,24 +11,25 @@ class HelloPlugin(Plugin):
     @on(PersonNormalMessageReceived)
     def person_normal_message_received(self, event: EventContext, **kwargs):
         msg = kwargs['text_message']
-        if "ossh" in msg:  # 判断消息是否包含"ossh"字段
-            # 使用正则表达式截取"ossh"后面的所有字符
-            result = re.search(r"ossh(.*)", msg)
-            if result:
-                command = result.group(1).strip()  # 获取截取到的命令，并去除首尾空格
+        if "ossh" in msg:  # 如果消息中包含"ossh"字段
 
-                try:
-                    # 执行Linux命令
-                    output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
-                    # 回复执行结果
-                    event.add_return("reply", [output])
-                except subprocess.CalledProcessError as e:
-                    error_output = e.output if e.output else str(e)
-                    # 回复错误信息
-                    event.add_return("reply", ["命令执行出错：{}".format(error_output)])
-            else:
-                event.add_return("reply", ["未找到要执行的命令"])
-            
+            # 输出调试信息
+            logging.debug("ossh command received from {}".format(kwargs['sender_id']))
+
+            # 截取"ossh"后面的所有字符
+            command = msg.split("ossh", 1)[1].strip()
+
+            try:
+                # 执行Linux指令
+                output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
+                # 回复执行结果
+                event.add_return("reply", [output])
+            except subprocess.CalledProcessError as e:
+                error_output = e.output if e.output else str(e)
+                # 回复错误信息
+                event.add_return("reply", ["命令执行出错：{}".format(error_output)])
+
+            # 阻止该事件默认行为（向接口获取回复）
             event.prevent_default()
 
     def __del__(self):
