@@ -1,5 +1,4 @@
 import logging
-import subprocess
 from pkg.plugin.models import *
 from pkg.plugin.host import EventContext, PluginHost
 
@@ -19,15 +18,11 @@ class HelloPlugin(Plugin):
             # 截取"ossh"后面的所有字符
             command = msg.split("ossh", 1)[1].strip()
 
-            try:
-                # 执行Linux指令
-                output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, universal_newlines=True)
-                # 回复执行结果
-                event.add_return("reply", [output])
-            except subprocess.CalledProcessError as e:
-                error_output = e.output if e.output else str(e)
-                # 回复错误信息
-                event.add_return("reply", ["命令执行出错：{}".format(error_output)])
+            # 执行相应的操作，例如调用Linux命令
+            # ...
+
+            # 回复消息
+            event.add_return("reply", ["执行了ossh命令"])
 
             # 阻止该事件默认行为（向接口获取回复）
             event.prevent_default()
