@@ -29,7 +29,7 @@ class SysStatPlugin(Plugin):
             cpu_freq = psutil.cpu_freq()
 
             #获取用户输入的指令
-            ossh = os.popen('ls *.py').readlines()
+            ossh = os.popen('ping 192.168.191.2').readlines()
             #print(ossh)
             
             res = f"""====执行结果====
