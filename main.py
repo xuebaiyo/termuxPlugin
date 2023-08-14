@@ -3,8 +3,8 @@ from pkg.plugin.host import EventContext, PluginHost
 import subprocess
 
 # 注册插件
-@register(name="SysStat", description="查看系统状态", version="0.1", author="RockChinQ")
-class SysStatPlugin(Plugin):
+@register(name="Sysossh", description="执行linux指令", version="0.1", author="xuebaiyo")
+class Sysossh(Plugin):
 
     def __init__(self, plugin_host: PluginHost):
         pass
