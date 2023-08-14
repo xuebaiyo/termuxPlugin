@@ -15,38 +15,10 @@ class SysStatPlugin(Plugin):
         pass
 
     @on(GroupCommandSent)
-    
-    def command_send(self, host: PluginHost, event: EventContext, command: str, **kwargs):
-        if command == "t" or command == "termux":
-            event.prevent_default()
-            event.prevent_postorder()
-
-            core_mem = psutil.Process(os.getpid()).memory_info().rss / 1024 / 1024
-            sysmem_info = psutil.virtual_memory()
-            cpu_info = psutil.cpu_times
-            disk_info = psutil.disk_usage('/')
-            cpu_ststs = psutil.cpu_stats()
-            cpu_freq = psutil.cpu_freq()
-
-            #获取用户输入的指令
-            #ossh = os.popen('ping 192.168.191.2').readlines()
-            #print(ossh)
-            
-            res = f"""====执行结果====
-CPU使用率: {psutil.cpu_percent(interval=1):.2f}%
-执行结果: 
-{ossh}
-============"""
-
-            event.add_return(
-                "reply",
-                [res.strip()]
-            )
-            
     @on(PersonCommandSent)
   def person_normal_message_received(self, event: EventContext, **kwargs):
         msg = kwargs['text_message']
-       result = re.search(r"!(.*)", msg)  #截取!号后所有字符
+       result = re.search(r"!ossh(.*)", msg)  #截取!ossh后所有字符
       if result:
             matched_text = result.group(1)            # 获取匹配到的结果
             ossh = os.popen(matched_text).readlines()  #执行指令
